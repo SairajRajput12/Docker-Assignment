@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  database:
+    build: ./database
+    container_name: database
+    networks:
+      - demo-network
+    volumes:
+      - ./database:/app
+    ports:
+      - 5001:5001
+  
+
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      SECRET_KEY: "v1nXKZxGmsTj_4LdYgcOfzm4H_DRVoMM955vgpSLp5E"
+      BACKEND_URL: "http://database:5001"
+    networks:
+      - demo-network
+    ports: 
+      - 9000:5001
+
+  frontend:
+    # build: ./Project-Management-System-With-Role-Based-Functionality
+    image: frontend:latest
+    container_name: frontend
+    networks:
+      - demo-network  
+    environment: 
+      VITE_BACKEND_FLASK_URL: "http://localhost:9000"
+    ports: 
+      - 8080:8080
+
+networks:
+  demo-network:
+    driver: bridge
+
