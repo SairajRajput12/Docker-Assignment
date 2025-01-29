@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  backend:
+    # build: ./backend
+    image: backend:latest
+    container_name: backend
+    network_mode: 'host'
+    environment:
+      SECRET_KEY: "v1nXKZxGmsTj_4LdYgcOfzm4H_DRVoMM955vgpSLp5E"
+      BACKEND_URL: "http://${HOST_IP}:5001"  
+
+
+  database:
+    # build: ./database
+    image: database:latest
+    container_name: database
+    network_mode: 'host'
+    volumes:
+      - ./database:/app
+    environment:
+      SECRET_KEY: "v1nXKZxGmsTj_4LdYgcOfzm4H_DRVoMM955vgpSLp5E"
+      BACKEND_URL: "http://${HOST_IP}:5001" 
+
+  frontend:
+    image: frontend:latest
+    # build: ./Project-Management-System-With-Role-Based-Functionality
+    container_name: frontend
+    network_mode: 'host'
+    environment:
+      VITE_BACKEND_FLASK_URL: "http://${HOST_IP}:5005"  
+
+
